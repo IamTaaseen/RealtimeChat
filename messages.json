@@ -1,182 +1,58 @@
 [
   {
-    "name": "Anowar",
-    "stuffs": "How r u?"
-  },
-  {
-    "name": "wadawdwad",
+    "name": "Taaseen",
     "stuffs": "awdwad"
   },
   {
-    "name": "wadawdwad",
-    "stuffs": "awdwadwd"
+    "name": "Taaseen",
+    "stuffs": "awdw"
   },
   {
-    "name": "",
-    "stuffs": "hello"
-  },
-  {
-    "name": "wadawdwad",
-    "stuffs": "awdwadwd"
-  },
-  {
-    "name": "awd",
-    "stuffs": "awd"
-  },
-  {
-    "name": "awd",
-    "stuffs": "awd"
-  },
-  {
-    "name": "awd",
-    "stuffs": "awd"
-  },
-  {
-    "name": "",
-    "stuffs": "wad"
-  },
-  {
-    "name": "",
-    "stuffs": "awd"
-  },
-  {
-    "name": "",
-    "stuffs": "awd"
-  },
-  {
-    "name": "wad",
-    "stuffs": "awd"
-  },
-  {
-    "name": "",
-    "stuffs": "adw"
-  },
-  {
-    "name": "",
-    "stuffs": "a"
-  },
-  {
-    "name": "",
-    "stuffs": "aaaaa"
-  },
-  {
-    "name": "a",
-    "stuffs": "a"
-  },
-  {
-    "name": "",
-    "stuffs": "a"
-  },
-  {
-    "name": "",
-    "stuffs": "a"
-  },
-  {
-    "name": "",
-    "stuffs": "a"
-  },
-  {
-    "name": "",
-    "stuffs": "a"
-  },
-  {
-    "name": "awdaw",
-    "stuffs": "awd"
-  },
-  {
-    "name": "",
+    "name": "Taaseen",
     "stuffs": "awdawd"
   },
   {
-    "name": "awdwad",
-    "stuffs": "ad"
-  },
-  {
-    "name": "",
-    "stuffs": "wad"
-  },
-  {
-    "name": "",
-    "stuffs": "awd"
-  },
-  {
-    "name": "wad",
-    "stuffs": "awd"
-  },
-  {
-    "name": "wad",
-    "stuffs": "awd"
-  },
-  {
-    "name": "",
-    "stuffs": "awdawdawd"
-  },
-  {
-    "name": "w",
-    "stuffs": "w"
-  },
-  {
-    "name": "w",
-    "stuffs": "w"
-  },
-  {
-    "name": "awd",
-    "stuffs": "adw"
-  },
-  {
-    "name": "",
-    "stuffs": "w"
-  },
-  {
-    "name": "w",
-    "stuffs": "w"
-  },
-  {
-    "name": "awd",
+    "name": "Taaseen",
     "stuffs": "awdawd"
   },
   {
-    "name": "awd",
-    "stuffs": "awd"
+    "name": "Taaseen",
+    "stuffs": "awdawdaw"
   },
   {
-    "name": "",
-    "stuffs": "a"
+    "name": "Taaseen",
+    "stuffs": "wadwadwad"
   },
   {
-    "name": "awd",
-    "stuffs": "awd"
+    "name": "Taaseen",
+    "stuffs": "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
   },
   {
-    "name": "awd",
-    "stuffs": "awd"
+    "name": "Taaseen",
+    "stuffs": "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
   },
   {
-    "name": "awd",
-    "stuffs": "awd"
+    "name": "Taaseen",
+    "stuffs": "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww"
   },
   {
-    "name": "awd",
-    "stuffs": "awd"
+    "name": "Taaseen",
+    "stuffs": "hi yoo o whats good ? "
   },
   {
-    "name": "awdadawawd",
-    "stuffs": "awd"
+    "name": "Taaseen",
+    "stuffs": "is everything going finee ?? "
   },
   {
-    "name": "",
-    "stuffs": "yooo wsg "
+    "name": "Taaseen",
+    "stuffs": "yepp boys ? "
   },
   {
-    "name": "wad",
-    "stuffs": "awd"
+    "name": "Taaseen",
+    "stuffs": "const submit = document.getElementById(\"submit\")\r\nconst chats = document.getElementById(\"chats\");\r\nconst nameInput = document.getElementById(\"name\");\r\nnameInput.value = localStorage.getItem(\"nameValue\") || \"\";\r\n\r\nconst lastMessage = chats.lastElementChild;\r\n\r\n\r\nif (lastMessage) {\r\n    lastMessage.scrollIntoView({\r\n    behavior: \"smooth\"\r\n});\r\n}\r\ndocument.body.addEventListener(\"click\", () => {\r\n    lastMessage.scrollIntoView({\r\n        behavior: \"smooth\"\r\n    })\r\n});\r\nnameInput.addEventListener(\"input\", () => {\r\n    localStorage.setItem(\"nameValue\", nameInput.value);\r\n})"
   },
   {
-    "name": "awd",
-    "stuffs": "awd"
-  },
-  {
-    "name": "aa",
-    "stuffs": "aaaa"
+    "name": "Taaseen",
+    "stuffs": "w\r\nw"
   }
 ]

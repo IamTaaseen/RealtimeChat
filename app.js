@@ -9,7 +9,7 @@ app.get("/", async (req, res) => {
     let web = await fs.readFile("index.html", "utf8");
     let template = "";
     messages.forEach(element => {
-            template += `<p>${element.name}: ${element.stuffs}</p>\n`
+            template += `<p class = "msg">${element.name}: ${element.stuffs}</p>\n`
         });
     web = web.replace("{xXplaceholderXXmessageXx&}",template);
     res.send(web);
