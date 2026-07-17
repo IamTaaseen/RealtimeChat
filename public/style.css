@@ -11,10 +11,17 @@ body{
     display: block;
     margin: 0 auto ;
     margin-bottom: 20px;
+    width: 90%;
+    
+}
+#name{
+    text-align: center;
+    max-width: 200px;
 }
 #message{
     resize: none;
-    
+    max-width: 600px;
+    max-height: 300px;
 }
 #message::-webkit-scrollbar{
     display: none;
@@ -24,13 +31,16 @@ body{
     border-radius: 50%;
     width: 50px;
     height: 50px;
-    margin: 0 auto ;
+    margin: 10px auto ;
     display: block;
     transition: .2s ease;
 }
 @media(hover: hover){
     #submit:hover{
         transform: scale(1.2);
+    }
+    .msg:hover{
+        transform: scale(1.01);
     }
 }
 #chats{
@@ -45,7 +55,7 @@ body{
     
 }
 .msg{
-    background: rgb(132, 207, 20);
+    white-space: pre-wrap;
     margin: 0 0 3px 0;
     min-height: 30px;
     display: flex;
@@ -53,6 +63,7 @@ body{
     padding: 5px;
     word-break: break-word;
     border-radius: 12px;
+    transition: 0.5s ease;
 }
 #chats::-webkit-scrollbar{
     display: none;

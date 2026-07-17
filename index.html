@@ -11,11 +11,13 @@
     <div id="chats">
         {xXplaceholderXXmessageXx&}
     </div>
-    <form action="/" method="POST" autocomplete="off">
+    <form id="form" action="/" method="POST" autocomplete="off">
+        
         <input type="text" id="name" name="name" placeholder="name" required>
         <textarea type="text" id="message" name="stuffs" placeholder="message" required></textarea> 
         <button id="submit">Post</button>
     </form>
+    <script src="/socket.io/socket.io.js"></script>
     <script src="/script.js"></script>
 </body>
 </html>
