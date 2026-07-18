@@ -11,7 +11,7 @@ const server = createServer(app);
 const io = new Server(server)
 
 const lastMessageTime = new Map();
-const MAX_MESSAGES = 500;
+const MAX_MESSAGES = 100;
 
 db.exec(`
     CREATE TABLE IF NOT EXISTS messages (
@@ -31,7 +31,18 @@ const insertMessage = db.prepare(`
     VALUES (?, ?, ?, ?)
     `)
 
-
+const countMessages = db.prepare(`
+            SELECT COUNT(*) AS count
+            FROM messages
+        `)
+const deleteOldestMessage = db.prepare(`
+    DELETE FROM messages
+    WHERE id = (
+        SELECT id
+        FROM messages
+        ORDER BY createdAt ASC
+        LIMIT 1
+)`)
 function escapeHTML(str) {
     return str
         .replaceAll("&", "&amp;")
@@ -100,7 +111,11 @@ io.on("connection", (socket) => {
             messageWithProperties.stuffs,
             messageWithProperties.createdAt
         );
-
+        const totalMessage = countMessages.get().count;
+        if(countMessages.get().count > MAX_MESSAGES){
+            deleteOldestMessage.run()
+            io.emit("deleteOldest");
+        }
         io.emit("message", messageWithProperties);
     });
     socket.on("disconnect", () => {

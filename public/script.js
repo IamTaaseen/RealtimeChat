@@ -140,6 +140,12 @@ socket.on("message", (msg) => {
 });
     chats.lastElementChild.style.background = `linear-gradient(${colorGradient()})`
 });
+socket.on("deleteOldest", () => {
+    const timestamp = chats.querySelector(".timestamp");
+    const message = chats.querySelector(".msg");
+    if(timestamp) timestamp.remove();
+    if(message) message.remove();
+})
 document.querySelectorAll(".timestamp").forEach(el => {
     el.textContent = formattedTimestamp(Number(el.dataset.time));
 });
