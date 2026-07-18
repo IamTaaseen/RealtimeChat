@@ -12,24 +12,19 @@ const io = new Server(server)
 
 const lastMessageTime = new Map();
 const MAX_MESSAGES = 500;
-let messages = ""
-
-try{
-    messages = JSON.parse(await fs.readFile("data/messages.json", "utf8"));
-} catch {
-    await fs.mkdir("data", { recursive: true });
-    await fs.writeFile("data/messages.json", "[]");
-    messages = JSON.parse(await fs.readFile("data/messages.json", "utf8"));
-}
-
 
 db.exec(`
     CREATE TABLE IF NOT EXISTS messages (
-    id TEXT PROMARY KEY,
+    id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
     stuffs TEXT NOT NULL,
     createdAt INTEGER NOT NULL
 )
+`)
+const getMessages = db.prepare(`
+        SELECT * 
+        FROM messages
+        ORDER BY createdAt ASC
 `)
 const insertMessage = db.prepare(`
     INSERT INTO messages (id, name, stuffs, createdAt)
@@ -56,6 +51,7 @@ app.use(express.static("public"))
 app.get("/", async (req, res) => {
     let web = await fs.readFile("index.html", "utf8");
     let template = "";
+    const messages = getMessages.all()
     messages.forEach(element => {
 
             const safeName = escapeHTML(element.name.trim());
@@ -105,11 +101,6 @@ io.on("connection", (socket) => {
             messageWithProperties.createdAt
         );
 
-        messages.push(messageWithProperties);
-        if(messages.length > MAX_MESSAGES){
-            messages.shift();
-        }
-        await fs.writeFile("data/messages.json", JSON.stringify(messages, null, 2));
         io.emit("message", messageWithProperties);
     });
     socket.on("disconnect", () => {
