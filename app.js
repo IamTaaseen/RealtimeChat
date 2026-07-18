@@ -14,6 +14,7 @@ let messages = ""
 try{
     messages = JSON.parse(await fs.readFile("data/messages.json", "utf8"));
 } catch {
+    await fs.mkdir("data", { recursive: true });
     await fs.writeFile("data/messages.json", "[]");
     messages = JSON.parse(await fs.readFile("data/messages.json", "utf8"));
 }
