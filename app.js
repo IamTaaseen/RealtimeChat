@@ -98,7 +98,13 @@ io.on("connection", (socket) => {
             stuffs: msg.stuffs,
             createdAt: Date.now()
         }
-        
+        insertMessage.run(
+            messageWithProperties.id,
+            messageWithProperties.name,
+            messageWithProperties.stuffs,
+            messageWithProperties.createdAt
+        );
+
         messages.push(messageWithProperties);
         if(messages.length > MAX_MESSAGES){
             messages.shift();
