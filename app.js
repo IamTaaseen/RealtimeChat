@@ -1,16 +1,19 @@
 import express from "express";
 import fs from "node:fs/promises";
+import Database from "better-sqlite3";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
 import { randomUUID } from "node:crypto";
 
 const app = express();
+const db = new Database("data/messages.db")
 const server = createServer(app);
 const io = new Server(server)
 
 const lastMessageTime = new Map();
 const MAX_MESSAGES = 500;
 let messages = ""
+
 try{
     messages = JSON.parse(await fs.readFile("data/messages.json", "utf8"));
 } catch {
@@ -18,6 +21,21 @@ try{
     await fs.writeFile("data/messages.json", "[]");
     messages = JSON.parse(await fs.readFile("data/messages.json", "utf8"));
 }
+
+
+db.exec(`
+    CREATE TABLE IF NOT EXISTS messages (
+    id TEXT PROMARY KEY,
+    name TEXT NOT NULL,
+    stuffs TEXT NOT NULL,
+    createdAt INTEGER NOT NULL
+)
+`)
+const insertMessage = db.prepare(`
+    INSERT INTO messages (id, name, stuffs, createdAt)
+    VALUES (?, ?, ?, ?)
+    `)
+
 
 function escapeHTML(str) {
     return str
