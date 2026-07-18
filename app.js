@@ -9,15 +9,27 @@ const io = new Server(server)
 
 const lastMessageTime = new Map();
 
-let messages = JSON.parse(await fs.readFile("messages.json", "utf8"));
+let messages = JSON.parse(await fs.readFile("data/messages.json", "utf8"));
+
+function escapeHTML(str) {
+    return str
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#39;");
+}
+
 
 app.use(express.static("public"))
 app.get("/", async (req, res) => {
     let web = await fs.readFile("index.html", "utf8");
     let template = "";
     messages.forEach(element => {
-            const text = element.stuffs.trim();
-            template += `<p class = "msg">${element.name}: ${text}</p>\n`
+
+            const safeName = escapeHTML(element.name.trim());
+            const safeText = escapeHTML(element.stuffs.trim());
+            template += `<p class = "msg">${safeName}: ${safeText}</p>\n`
         });
     web = web.replace("{xXplaceholderXXmessageXx&}",template);
     res.send(web);
@@ -47,7 +59,7 @@ io.on("connection", (socket) => {
             msg.stuffs = msg.stuffs.slice(0, 2000);
         
         messages.push(msg);
-        await fs.writeFile("messages.json", JSON.stringify(messages, null, 2));
+        await fs.writeFile("data/messages.json", JSON.stringify(messages, null, 2));
         io.emit("message", msg);
     })
     
