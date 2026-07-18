@@ -2,14 +2,21 @@ import express from "express";
 import fs from "node:fs/promises";
 import { createServer } from "node:http";
 import { Server } from "socket.io";
+import { randomUUID } from "node:crypto";
 
 const app = express();
 const server = createServer(app);
 const io = new Server(server)
 
 const lastMessageTime = new Map();
-
-let messages = JSON.parse(await fs.readFile("data/messages.json", "utf8"));
+const MAX_MESSAGES = 500;
+let messages = ""
+try{
+    messages = JSON.parse(await fs.readFile("data/messages.json", "utf8"));
+} catch {
+    await fs.writeFile("data/messages.json", "[]");
+    messages = JSON.parse(await fs.readFile("data/messages.json", "utf8"));
+}
 
 function escapeHTML(str) {
     return str
@@ -19,7 +26,9 @@ function escapeHTML(str) {
         .replaceAll('"', "&quot;")
         .replaceAll("'", "&#39;");
 }
-
+function PleaseDontCollide(){
+    return Date.now() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID()
+}
 
 app.use(express.static("public"))
 app.get("/", async (req, res) => {
@@ -57,10 +66,22 @@ io.on("connection", (socket) => {
             msg.name = msg.name.slice(0, 30);
         if (msg.stuffs.length > 2000) 
             msg.stuffs = msg.stuffs.slice(0, 2000);
+        const messageWithProperties = {
+            id: PleaseDontCollide(),
+            name: msg.name,
+            stuffs: msg.stuffs,
+            createdAt: Date.now()
+        }
         
-        messages.push(msg);
+        messages.push(messageWithProperties);
+        if(messages.length > MAX_MESSAGES){
+            messages.shift();
+        }
         await fs.writeFile("data/messages.json", JSON.stringify(messages, null, 2));
-        io.emit("message", msg);
+        io.emit("message", messageWithProperties);
+    });
+    socket.on("disconnect", () => {
+        lastMessageTime.delete(socket.id);
     })
     
 })
