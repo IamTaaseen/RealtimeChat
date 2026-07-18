@@ -8,6 +8,7 @@ const chats = document.getElementById("chats");
 const messageTextarea = document.getElementById("message");
 const nameInput = document.getElementById("name");
 const messages = document.querySelectorAll(".msg");
+const userCount = document.getElementById("userCount");
 const colors = [
                     "#FFF8E7",
                     "#F5F5DC",
@@ -117,6 +118,9 @@ function colorGradient(){
 
     return gradient;
 }
+socket.on("onlineUsers", (count) => {
+    userCount.innerHTML = `<p><b>Online Users: </b>${count}</p>`
+})
 socket.on("message", (msg) => {
     const p = document.createElement("p");
     p.className = "msg";
@@ -129,7 +133,18 @@ socket.on("message", (msg) => {
 });
     chats.lastElementChild.style.background = `linear-gradient(${colorGradient()})`
 });
-
+messageTextarea.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey){
+        e.preventDefault();
+        form.requestSubmit();
+    }
+});
+nameInput.addEventListener("keydown", (e) => {
+    if(e.key === "Enter"){
+        e.preventDefault();
+        form.requestSubmit();
+    }
+})
 form.addEventListener("submit", (e) => {
     e.preventDefault();
 

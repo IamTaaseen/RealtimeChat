@@ -48,6 +48,8 @@ app.post("/", async (req, res) => {
     res.redirect("/")
 });
 io.on("connection", (socket) => {
+    io.emit("onlineUsers", io.engine.clientsCount);
+
     socket.on("message",async (msg) => {
         const now = Date.now();
         const last = lastMessageTime.get(socket.id) || 0;
@@ -82,6 +84,7 @@ io.on("connection", (socket) => {
         io.emit("message", messageWithProperties);
     });
     socket.on("disconnect", () => {
+        io.emit("onlineUsers", io.engine.clientsCount);
         lastMessageTime.delete(socket.id);
     })
     

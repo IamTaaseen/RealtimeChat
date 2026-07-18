@@ -68,3 +68,6 @@ body{
 #chats::-webkit-scrollbar{
     display: none;
 }
+#userCount{
+    font-size: 20px;
+}
