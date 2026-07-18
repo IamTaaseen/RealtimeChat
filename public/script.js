@@ -157,7 +157,7 @@ if (chats.lastElementChild) {
 });
 }
 chats.addEventListener("click", () => {
-    lastMessage.scrollIntoView({
+    chats.lastElementChild.scrollIntoView({
         behavior: "smooth"
     })
 });

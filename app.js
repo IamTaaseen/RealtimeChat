@@ -7,6 +7,8 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server)
 
+const lastMessageTime = new Map();
+
 let messages = JSON.parse(await fs.readFile("messages.json", "utf8"));
 
 app.use(express.static("public"))
@@ -24,12 +26,26 @@ app.post("/", async (req, res) => {
     res.redirect("/")
 });
 io.on("connection", (socket) => {
-    socket.on("message",async (msg) => {        
-        if (msg.stuffs.length > 2000) {
-            msg.stuffs = msg.stuffs.slice(0, 2000);
-        }
-        msg.name = msg.name.trim();
+    socket.on("message",async (msg) => {
+        const now = Date.now();
+        const last = lastMessageTime.get(socket.id) || 0;
+        if(now - last < 1000)
+            return
+        
+        lastMessageTime.set(socket.id, now);
+        if (typeof msg.stuffs !== "string" || typeof msg.name !== "string")
+            return;
+        
+
+        msg.name = msg.name.trim()
         msg.stuffs = msg.stuffs.trim();
+        if(!msg.name || !msg.stuffs)
+            return;
+        if(msg.name.length > 30)
+            msg.name = msg.name.slice(0, 30);
+        if (msg.stuffs.length > 2000) 
+            msg.stuffs = msg.stuffs.slice(0, 2000);
+        
         messages.push(msg);
         await fs.writeFile("messages.json", JSON.stringify(messages, null, 2));
         io.emit("message", msg);
