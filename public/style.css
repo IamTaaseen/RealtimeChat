@@ -71,3 +71,8 @@ body{
 #userCount{
     font-size: 20px;
 }
+.timestamp{
+    font-size: 15px;
+    color: grey;
+    margin: 15px 0 5px 0;
+}

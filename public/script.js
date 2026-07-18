@@ -106,6 +106,9 @@ function randomColor(){
     const randColor = colors[Math.floor(Math.random() * colors.length)];
     return randColor;
 }
+function formattedTimestamp(createdAt){
+    return new Date(createdAt).toLocaleString();
+}
 function colorGradient(){
     let gradient = `45deg,`;
     for (let i = 0; i < 23; i++) {
@@ -122,16 +125,23 @@ socket.on("onlineUsers", (count) => {
     userCount.innerHTML = `<p><b>Online Users: </b>${count}</p>`
 })
 socket.on("message", (msg) => {
-    const p = document.createElement("p");
-    p.className = "msg";
-    p.textContent = `${msg.name}: ${msg.stuffs}`
-
-    chats.appendChild(p);
+    const p2 = document.createElement("p");
+    p2.className = "timestamp"
+    p2.textContent = `${formattedTimestamp(msg.createdAt)}`;
+    const p1 = document.createElement("p");
+    p1.className = "msg";
+    p1.textContent = `${msg.name}: ${msg.stuffs}`
+    chats.appendChild(p2);
+    chats.appendChild(p1);
+    
     chats.lastElementChild.scrollIntoView({
     behavior: "smooth"
     
 });
     chats.lastElementChild.style.background = `linear-gradient(${colorGradient()})`
+});
+document.querySelectorAll(".timestamp").forEach(el => {
+    el.textContent = formattedTimestamp(Number(el.dataset.time));
 });
 messageTextarea.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && !e.shiftKey){

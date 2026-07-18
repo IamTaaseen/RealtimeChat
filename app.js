@@ -30,6 +30,9 @@ function escapeHTML(str) {
 function PleaseDontCollide(){
     return Date.now() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID()
 }
+function formattedTimestamp(createdAt){
+    return new Date(createdAt).toLocaleString();
+}
 
 app.use(express.static("public"))
 app.get("/", async (req, res) => {
@@ -39,7 +42,9 @@ app.get("/", async (req, res) => {
 
             const safeName = escapeHTML(element.name.trim());
             const safeText = escapeHTML(element.stuffs.trim());
-            template += `<p class = "msg">${safeName}: ${safeText}</p>\n`
+            template += `
+            <p class="timestamp" data-time="${element.createdAt}"></p>
+            <p class = "msg">${safeName}: ${safeText}</p>\n`
         });
     web = web.replace("{xXplaceholderXXmessageXx&}",template);
     res.send(web);
