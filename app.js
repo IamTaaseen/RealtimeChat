@@ -44,6 +44,11 @@ const deleteOldestMessage = db.prepare(`
         ORDER BY createdAt ASC
         LIMIT 1
 )`)
+const getMessagesById = db.prepare(`
+    SELECT *
+    FROM messages
+    WHERE id = ?
+    `)
 function escapeHTML(str) {
     return str
         .replaceAll("&", "&amp;")
@@ -65,11 +70,16 @@ app.get("/", async (req, res) => {
     let template = "";
     const messages = getMessages.all()
     messages.forEach(element => {
-
+            const repliedMessage = getMessagesById.get(element.replyTo);
+            let reply = null;
+            
             const safeName = escapeHTML(element.name.trim());
             const safeText = escapeHTML(element.stuffs.trim());
+            if (repliedMessage) {
+                reply = `↳ ${repliedMessage.name}: ${repliedMessage.stuffs.slice(0,20)}`
+            }
             template += `
-            <p class="timestamp" data-time="${element.createdAt}"></p>
+            <p class="timestamp" data-time="${element.createdAt}" data-reply="${reply}"></p>
             <p class = "msg" data-id="${element.id}" data-name="${safeName}" >${safeName}: ${safeText}</p>\n`
         });
     web = web.replace("{xXplaceholderXXmessageXx&}",template);
@@ -109,6 +119,7 @@ io.on("connection", (socket) => {
             createdAt: Date.now(),
             replyTo: msg.replyTo ?? null
         }
+        console.log(messageWithProperties.replyTo)
         insertMessage.run(
             messageWithProperties.id,
             messageWithProperties.name,

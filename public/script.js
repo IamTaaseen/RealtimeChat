@@ -128,9 +128,17 @@ socket.on("onlineUsers", (count) => {
     userCount.innerHTML = `<p><b>Online Users: </b>${count}</p>`
 })
 socket.on("message", (msg) => {
-    const p2 = document.createElement("p");
-    p2.className = "timestamp"
-    p2.textContent = `${formattedTimestamp(msg.createdAt)}`;
+    let p2 = "";
+    if(msg.replyTo){
+        p2 = document.createElement("p");
+        p2.className = "timestamp reply"
+        p2.textContent = `${msg.replyTo}- ${formattedTimestamp(msg.createdAt)}`;
+    }
+    else{
+        p2 = document.createElement("p");
+        p2.className = "timestamp"
+        p2.textContent = `${formattedTimestamp(msg.createdAt)}`;
+    }
     const p1 = document.createElement("p");
     p1.className = "msg";
     p1.dataset.id = msg.id;
@@ -154,8 +162,12 @@ socket.on("deleteOldest", () => {
     if(message) message.remove();
 })
 document.querySelectorAll(".timestamp").forEach(el => {
-    el.textContent = formattedTimestamp(Number(el.dataset.time));
-});
+    if(el.dataset.reply !== "null"){
+        el.textContent = `${el.dataset.reply}- ${formattedTimestamp(Number(el.dataset.time))}`;}
+    else{
+        el.textContent = formattedTimestamp(Number(el.dataset.time));
+    }
+    });
 messageTextarea.addEventListener("keydown", (e) => {
     if (e.key === "Enter" && !e.shiftKey){
         e.preventDefault();
@@ -171,7 +183,6 @@ nameInput.addEventListener("keydown", (e) => {
 
 form.addEventListener("submit", (e) => {
     e.preventDefault();
-
     socket.emit("message", {
         name: nameInput.value,
         stuffs: messageTextarea.value,
