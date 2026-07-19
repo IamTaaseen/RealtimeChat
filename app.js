@@ -77,7 +77,7 @@ app.get("/", async (req, res) => {
             const safeName = escapeHTML(element.name.trim());
             const safeText = escapeHTML(element.stuffs.trim());
             if (repliedMessage) {
-                reply = `↳ ${repliedMessage.name}: ${repliedMessage.stuffs.slice(0,20)}`
+                reply = `↳ ${repliedMessage.name}: ${repliedMessage.stuffs.slice(0,50)}`
             }
             template += `
             <p class="timestamp" data-time="${element.createdAt}" data-reply="${reply}"></p>
@@ -91,7 +91,6 @@ app.post("/", async (req, res) => {
 });
 io.on("connection", (socket) => {
     io.emit("onlineUsers", io.engine.clientsCount);
-    
     socket.on("message",async (msg) => {
         const now = Date.now();
         const last = lastMessageTime.get(socket.id) || 0;
@@ -142,6 +141,7 @@ io.on("connection", (socket) => {
     socket.on("disconnect", () => {
         io.emit("onlineUsers", io.engine.clientsCount);
         lastMessageTime.delete(socket.id);
+
     })
     
 })

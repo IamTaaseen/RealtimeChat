@@ -11,7 +11,11 @@ const nameInput = document.getElementById("name");
 const messages = document.querySelectorAll(".msg");
 const userCount = document.getElementById("userCount");
 const isReplying = document.getElementById("isReplying")
+
+
 let replyingTo = null;
+let moved = false;
+
 const colors = [
                     "#FFF8E7",
                     "#F5F5DC",
@@ -130,7 +134,7 @@ socket.on("onlineUsers", (count) => {
 socket.on("message", (msg) => {
     let p2 = "";
     if(msg.replyTo){
-        let reply = `↳ ${msg.replyToMessage.name}: ${msg.replyToMessage.stuffs.slice(0,20)}`
+        let reply = `↳ ${msg.replyToMessage.name}: ${msg.replyToMessage.stuffs.slice(0,50)}`
         p2 = document.createElement("p");
         p2.className = "timestamp reply"
         p2.textContent = `${reply}- ${formattedTimestamp(msg.createdAt)}`;
@@ -147,6 +151,8 @@ socket.on("message", (msg) => {
     chats.appendChild(p2);
     chats.appendChild(p1);
     p1.addEventListener("click", () => {
+        if (moved) return;
+        console.log(moved)
         replyingTo = msg.id;
         isReplying.textContent = `↳ Replying to ${msg.name}`;
     })
@@ -194,7 +200,30 @@ form.addEventListener("submit", (e) => {
     messageTextarea.value = "";
     autoResize(messageTextarea);
 });
+document.addEventListener("pointerdown", () => {
+    moved = false;
+});
 
+document.addEventListener("pointermove", () => {
+    moved = true;
+});
+document.addEventListener("pointerup", () => {
+    setTimeout(() => moved = false, 0);
+});
+document.addEventListener("click", (e) => {
+    if (moved) return;
+    const clickedInside =
+        chats.contains(e.target) ||
+        messageTextarea.contains(e.target) ||
+        nameInput.contains(e.target) ||
+        submit.contains(e.target) ||
+        isReplying.contains(e.target);
+
+    if (!clickedInside) {
+        replyingTo = null;
+        isReplying.textContent = "";
+    }
+});
 nameInput.value = localStorage.getItem("nameValue") || "";
 
 
@@ -226,6 +255,7 @@ messages.forEach(el => {
 })
 document.querySelectorAll(".msg").forEach(msg => {
     msg.addEventListener("click", () => {
+        if(moved) return;
         replyingTo = msg.dataset.id;
         isReplying.textContent = `↳ Replying to ${msg.dataset.name}`;
 
