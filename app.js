@@ -109,8 +109,8 @@ io.on("connection", (socket) => {
             return;
         if(msg.name.length > 30)
             msg.name = msg.name.slice(0, 30);
-        if (msg.stuffs.length > 2000) 
-            msg.stuffs = msg.stuffs.slice(0, 2000);
+        if (msg.stuffs.length > 25000) 
+            msg.stuffs = msg.stuffs.slice(0, 25000);
         
         const messageWithProperties = {
             id: PleaseDontCollide(),

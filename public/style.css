@@ -37,6 +37,8 @@ body{
     margin: 0 auto;
 }
 #submit{
+    color: rgb(89, 186, 255);
+    font-size: 20px;
     background: rgb(154, 255, 154);
     position: absolute;
     right: 10px;
@@ -55,9 +57,6 @@ body{
 @media(hover: hover){
     #submit:hover{
         transform: scale(1.2);
-    }
-    .msg:hover{
-        transform: scale(1.01);
     }
 }
 #chats{
