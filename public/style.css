@@ -1,5 +1,5 @@
 body{
-    background: wheat;
+    background: rgb(238, 222, 193);
     font-family: sans-serif;
 }
 #name, #message{
@@ -37,6 +37,7 @@ body{
     margin: 0 auto;
 }
 #submit{
+    background: rgb(154, 255, 154);
     position: absolute;
     right: 10px;
     bottom: 10px;
@@ -46,6 +47,10 @@ body{
     height: 40px;
     display: block;
     transition: .2s ease;
+}
+#isReplying{
+    font-size: 15px;
+    color: grey;
 }
 @media(hover: hover){
     #submit:hover{

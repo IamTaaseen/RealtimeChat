@@ -18,7 +18,8 @@ db.exec(`
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
     stuffs TEXT NOT NULL,
-    createdAt INTEGER NOT NULL
+    createdAt INTEGER NOT NULL,
+    replyTo TEXT
 )
 `)
 const getMessages = db.prepare(`
@@ -27,8 +28,8 @@ const getMessages = db.prepare(`
         ORDER BY createdAt ASC
 `)
 const insertMessage = db.prepare(`
-    INSERT INTO messages (id, name, stuffs, createdAt)
-    VALUES (?, ?, ?, ?)
+    INSERT INTO messages (id, name, stuffs, createdAt, replyTo)
+    VALUES (?, ?, ?, ?, ?)
     `)
 
 const countMessages = db.prepare(`
@@ -69,7 +70,7 @@ app.get("/", async (req, res) => {
             const safeText = escapeHTML(element.stuffs.trim());
             template += `
             <p class="timestamp" data-time="${element.createdAt}"></p>
-            <p class = "msg">${safeName}: ${safeText}</p>\n`
+            <p class = "msg" data-id="${element.id}" data-name="${safeName}" >${safeName}: ${safeText}</p>\n`
         });
     web = web.replace("{xXplaceholderXXmessageXx&}",template);
     res.send(web);
@@ -79,7 +80,9 @@ app.post("/", async (req, res) => {
 });
 io.on("connection", (socket) => {
     io.emit("onlineUsers", io.engine.clientsCount);
-
+    socket.on("log", (text) => {
+        console.log(text)
+    })
     socket.on("message",async (msg) => {
         const now = Date.now();
         const last = lastMessageTime.get(socket.id) || 0;
@@ -103,13 +106,15 @@ io.on("connection", (socket) => {
             id: PleaseDontCollide(),
             name: msg.name,
             stuffs: msg.stuffs,
-            createdAt: Date.now()
+            createdAt: Date.now(),
+            replyTo: msg.replyTo ?? null
         }
         insertMessage.run(
             messageWithProperties.id,
             messageWithProperties.name,
             messageWithProperties.stuffs,
-            messageWithProperties.createdAt
+            messageWithProperties.createdAt,
+            messageWithProperties.replyTo
         );
         const totalMessage = countMessages.get().count;
         if(countMessages.get().count > MAX_MESSAGES){

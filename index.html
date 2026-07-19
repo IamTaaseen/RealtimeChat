@@ -12,10 +12,11 @@
         {xXplaceholderXXmessageXx&}
     </div>
     <form id="form" action="/" method="POST" autocomplete="off">
+        <input type="text" id="name" name="name" placeholder="Name" required>
         
-        <input type="text" id="name" name="name" placeholder="name" required>
         <div id="wrapper">
-            <textarea type="text" id="message" name="stuffs" placeholder="message" required></textarea> 
+            <p id="isReplying"></p>
+            <textarea type="text" id="message" name="stuffs" placeholder="Message" required></textarea> 
             <button id="submit">Post</button>
         </div>
     </form>

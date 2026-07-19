@@ -1,3 +1,4 @@
+
 const socket = io();
 
 
@@ -9,6 +10,8 @@ const messageTextarea = document.getElementById("message");
 const nameInput = document.getElementById("name");
 const messages = document.querySelectorAll(".msg");
 const userCount = document.getElementById("userCount");
+const isReplying = document.getElementById("isReplying")
+let replyingTo = null;
 const colors = [
                     "#FFF8E7",
                     "#F5F5DC",
@@ -130,10 +133,14 @@ socket.on("message", (msg) => {
     p2.textContent = `${formattedTimestamp(msg.createdAt)}`;
     const p1 = document.createElement("p");
     p1.className = "msg";
+    p1.dataset.id = msg.id;
     p1.textContent = `${msg.name}: ${msg.stuffs}`
     chats.appendChild(p2);
     chats.appendChild(p1);
-    
+    p1.addEventListener("click", () => {
+        replyingTo = msg.id;
+        isReplying.textContent = `↳ Replying to ${msg.name}`;
+    })
     chats.lastElementChild.scrollIntoView({
     behavior: "smooth"
     
@@ -161,13 +168,17 @@ nameInput.addEventListener("keydown", (e) => {
         form.requestSubmit();
     }
 })
+
 form.addEventListener("submit", (e) => {
     e.preventDefault();
 
     socket.emit("message", {
         name: nameInput.value,
-        stuffs: messageTextarea.value
+        stuffs: messageTextarea.value,
+        replyTo: replyingTo
     });
+    replyingTo = null;
+    isReplying.textContent = "";
     messageTextarea.value = "";
     autoResize(messageTextarea);
 });
@@ -200,4 +211,11 @@ messageTextarea.addEventListener("input", () => {
 });
 messages.forEach(el => {
     el.style.background = `linear-gradient(${colorGradient()})`;
+})
+document.querySelectorAll(".msg").forEach(msg => {
+    msg.addEventListener("click", () => {
+        replyingTo = msg.dataset.id;
+        isReplying.textContent = `↳ Replying to ${msg.dataset.name}`;
+
+    })
 })
