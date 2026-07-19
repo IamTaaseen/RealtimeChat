@@ -11,27 +11,39 @@ body{
     display: block;
     margin: 0 auto ;
     margin-bottom: 20px;
-    width: 90%;
+    
     
 }
 #name{
+    width: 90%;
     text-align: center;
     max-width: 200px;
-}
-#message{
-    resize: none;
-    max-width: 600px;
-    max-height: 300px;
 }
 #message::-webkit-scrollbar{
     display: none;
 }
+#message{
+    padding: 5px 50px 5px 5px ;
+    box-sizing: border-box;
+    width: 100%;
+    resize: none;
+    max-width: 600px;
+    max-height: 300px;
+}
+#wrapper{
+    position: relative;
+    width: 90%;
+    max-width: 600px;
+    margin: 0 auto;
+}
 #submit{
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
     border: 0;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    margin: 10px auto ;
+    width: 40px;
+    height: 40px;
     display: block;
     transition: .2s ease;
 }

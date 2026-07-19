@@ -52,7 +52,7 @@ function escapeHTML(str) {
         .replaceAll("'", "&#39;");
 }
 function PleaseDontCollide(){
-    return Date.now() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID() + "-" + randomUUID()
+    return Date.now() + "-" + randomUUID()
 }
 function formattedTimestamp(createdAt){
     return new Date(createdAt).toLocaleString();
