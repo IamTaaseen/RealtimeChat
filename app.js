@@ -90,9 +90,7 @@ app.post("/", async (req, res) => {
 });
 io.on("connection", (socket) => {
     io.emit("onlineUsers", io.engine.clientsCount);
-    socket.on("log", (text) => {
-        console.log(text)
-    })
+    
     socket.on("message",async (msg) => {
         const now = Date.now();
         const last = lastMessageTime.get(socket.id) || 0;
@@ -112,6 +110,7 @@ io.on("connection", (socket) => {
             msg.name = msg.name.slice(0, 30);
         if (msg.stuffs.length > 2000) 
             msg.stuffs = msg.stuffs.slice(0, 2000);
+        
         const messageWithProperties = {
             id: PleaseDontCollide(),
             name: msg.name,
@@ -119,7 +118,10 @@ io.on("connection", (socket) => {
             createdAt: Date.now(),
             replyTo: msg.replyTo ?? null
         }
-        console.log(messageWithProperties.replyTo)
+        const replyToMessage = messageWithProperties.replyTo
+            ? getMessagesById.get(messageWithProperties.replyTo)
+            : null;
+        
         insertMessage.run(
             messageWithProperties.id,
             messageWithProperties.name,
@@ -132,7 +134,9 @@ io.on("connection", (socket) => {
             deleteOldestMessage.run()
             io.emit("deleteOldest");
         }
-        io.emit("message", messageWithProperties);
+        io.emit("message", {
+            ...messageWithProperties,
+        replyToMessage: replyToMessage});
     });
     socket.on("disconnect", () => {
         io.emit("onlineUsers", io.engine.clientsCount);

@@ -130,9 +130,10 @@ socket.on("onlineUsers", (count) => {
 socket.on("message", (msg) => {
     let p2 = "";
     if(msg.replyTo){
+        let reply = `↳ ${msg.replyToMessage.name}: ${msg.replyToMessage.stuffs.slice(0,20)}`
         p2 = document.createElement("p");
         p2.className = "timestamp reply"
-        p2.textContent = `${msg.replyTo}- ${formattedTimestamp(msg.createdAt)}`;
+        p2.textContent = `${reply}- ${formattedTimestamp(msg.createdAt)}`;
     }
     else{
         p2 = document.createElement("p");
