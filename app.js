@@ -6,6 +6,7 @@ import { Server } from "socket.io";
 import { randomUUID } from "node:crypto";
 
 const app = express();
+await fs.mkdir("data", {recursive: true});
 const db = new Database("data/messages.db")
 const server = createServer(app);
 const io = new Server(server)
