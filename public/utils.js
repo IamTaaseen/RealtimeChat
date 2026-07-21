@@ -22,3 +22,15 @@ export function autoResize(el) {
     el.style.height = "auto";
     el.style.height = el.scrollHeight + "px";
 }
+export function notification(){
+    if(Notification.permission === "default"){
+        Notification.requestPermission();
+        
+    }
+    if(Notification.permission === "granted" && document.hidden && msg.name !== nameInput.value){
+        new Notification(msg.name, {
+            body: msg.stuffs.length > 50 ? msg.stuffs.slice(0,50)+"..."
+            : msg.stuffs
+        })
+    }
+}

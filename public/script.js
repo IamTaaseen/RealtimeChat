@@ -1,7 +1,8 @@
 import { colors } from "./constants.js";
 import { formattedTimestamp,
          autoResize,
-         colorGradient } from "./utils.js";
+         colorGradient,
+         notification } from "./utils.js";
 import { deleteOldest } from "./ui.js";
 
 const socket = io();
@@ -21,18 +22,7 @@ let moved = false;
 
 
 nameInput.value = localStorage.getItem("nameValue") || "";
-function notification(){
-    if(Notification.permission === "default"){
-        Notification.requestPermission();
-        
-    }
-    if(Notification.permission === "granted" && document.hidden && msg.name !== nameInput.value){
-        new Notification(msg.name, {
-            body: msg.stuffs.length > 50 ? msg.stuffs.slice(0,50)+"..."
-            : msg.stuffs
-        })
-    }
-}
+
 function createMessage(msg){
     
     let p2 = "";
