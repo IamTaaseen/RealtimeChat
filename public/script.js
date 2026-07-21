@@ -2,7 +2,7 @@ import { colors } from "./constants.js";
 import { formattedTimestamp,
          autoResize,
          colorGradient } from "./utils.js";
-
+import { deleteOldest } from "./ui.js";
 
 const socket = io();
 
@@ -64,12 +64,7 @@ function createMessage(msg){
 });
     chats.lastElementChild.style.background = `linear-gradient(${colorGradient(colors)})`
 }
-function deleteOldest(){
-    const timestamp = chats.querySelector(".timestamp");
-    const message = chats.querySelector(".msg");
-    if(timestamp) timestamp.remove();
-    if(message) message.remove();
-}
+
 function handleSubmit(e){
     e.preventDefault();
     socket.emit("message", {
