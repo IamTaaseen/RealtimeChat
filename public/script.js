@@ -23,7 +23,7 @@ let moved = false;
 
 nameInput.value = localStorage.getItem("nameValue") || "";
 
-function createMessage(msg){
+function createMessage(msg, chats, isReplying){
     
     let p2 = "";
     if(msg.replyTo){
@@ -85,7 +85,7 @@ socket.on("onlineUsers", (count) => {
     userCount.innerHTML = `<p><b>Online Users: </b>${count}</p>`
 })
 socket.on("message", (msg) => {
-    createMessage(msg);
+    createMessage(msg, chats, isReplying);
     notification();
 });
 socket.on("deleteOldest", deleteOldest);

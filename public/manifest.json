@@ -1,6 +1,6 @@
 {
-    "name": "RealtimeChat",
-    "short_name": "Chat",
+    "name": "Beacon",
+    "short_name": "Beacon",
     "description": "Realtime chatting application",
     "start_url": "/",
     "display": "standalone",
