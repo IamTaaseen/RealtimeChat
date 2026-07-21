@@ -21,9 +21,20 @@ let moved = false;
 
 
 nameInput.value = localStorage.getItem("nameValue") || "";
-
-
+function notification(){
+    if(Notification.permission === "default"){
+        Notification.requestPermission();
+        
+    }
+    if(Notification.permission === "granted" && document.hidden && msg.name !== nameInput.value){
+        new Notification(msg.name, {
+            body: msg.stuffs.length > 50 ? msg.stuffs.slice(0,50)+"..."
+            : msg.stuffs
+        })
+    }
+}
 function createMessage(msg){
+    
     let p2 = "";
     if(msg.replyTo){
         let reply = `↳ ${msg.replyToMessage.name}: ${msg.replyToMessage.stuffs.slice(0,50)}`
@@ -88,7 +99,10 @@ function replyDeleteFull(e){
 socket.on("onlineUsers", (count) => {
     userCount.innerHTML = `<p><b>Online Users: </b>${count}</p>`
 })
-socket.on("message", createMessage);
+socket.on("message", (msg) => {
+    createMessage(msg);
+    notification();
+});
 socket.on("deleteOldest", deleteOldest);
 //Probebly dead code
 document.querySelectorAll(".timestamp").forEach(el => {
