@@ -7,15 +7,7 @@ import { handleConnection } from "./server/socket/connection.js";
 
 
 
-db.exec(`
-    CREATE TABLE IF NOT EXISTS messages (
-    id TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
-    stuffs TEXT NOT NULL,
-    createdAt INTEGER NOT NULL,
-    replyTo TEXT
-)
-`)
+
 app.use(express.static("public"))
 app.get("/", async (req, res) => {
     let web = await fs.readFile("index.html", "utf8");

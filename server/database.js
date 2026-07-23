@@ -2,6 +2,15 @@ import Database from "better-sqlite3"
 import fs from "node:fs/promises"
 await fs.mkdir("data", {recursive: true});
 export const db = new Database("data/messages.db")
+db.exec(`
+    CREATE TABLE IF NOT EXISTS messages (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    stuffs TEXT NOT NULL,
+    createdAt INTEGER NOT NULL,
+    replyTo TEXT
+)
+`)
 export const getMessages = db.prepare(`
         SELECT * 
         FROM messages
