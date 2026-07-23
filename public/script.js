@@ -1,9 +1,11 @@
-import { colors } from "./constants.js";
-import { formattedTimestamp,
-         autoResize,
-         colorGradient,
-         notification } from "./utils.js";
-import { deleteOldest } from "./ui.js";
+import { colors } from "./js/constants.js";
+import {
+    formattedTimestamp,
+    autoResize,
+    colorGradient,
+    notification
+} from "./js/utils.js";
+import { deleteOldest } from "./js/ui.js";
 
 const socket = io();
 

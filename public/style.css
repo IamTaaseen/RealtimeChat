@@ -92,3 +92,7 @@ body{
     color: grey;
     margin: 15px 0 5px 0;
 }
+#istyping-indicator{
+    margin-bottom: 0;
+    font-size: 15px;
+}
