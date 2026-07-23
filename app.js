@@ -4,7 +4,7 @@ import { app, server, io } from "./server/server.js";
 import { db, getMessages, getMessagesById } from "./server/database.js";
 import { escapeHTML } from "./server/backendUtils.js";
 import { handleConnection } from "./server/socket/connection.js";
-await fs.mkdir("data", {recursive: true});
+
 
 
 db.exec(`

@@ -1,4 +1,6 @@
 import Database from "better-sqlite3"
+import fs from "node:fs/promises"
+await fs.mkdir("data", {recursive: true});
 export const db = new Database("data/messages.db")
 export const getMessages = db.prepare(`
         SELECT * 
